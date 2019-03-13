@@ -1,8 +1,12 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Hello Electron React!</title>
+    <title>Project List Pro</title>
+    <script>
+      var apiUrl = 'https://dev.projectlistpro.com/api/';
+  </script>
     <script>
       (function() {
         if (!process.env.HOT) {
@@ -16,7 +20,7 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="app"></div>
     <script>
       {
         const scripts = [];
@@ -42,5 +46,19 @@
         );
       }
     </script>
+        <script>
+          const ipcRenderer = require('electron').ipcRenderer;
+  
+          // wait for an updateReady message
+          ipcRenderer.on('updateReady', function(event, text) {
+              // changes the text of the button
+              var container = document.getElementById('ready');
+              container.innerHTML = "new version ready!";
+          })
+      </script>
+      Version: <span id="version">v1.0.3</span>
+      <!-- the button onClick sends a quitAndInstall message to the electron main process -->
+      <button id="ready" onClick="ipcRenderer.send('quitAndInstall')">no updates ready</button>
+  
   </body>
 </html>
